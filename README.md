@@ -1,7 +1,7 @@
 # AWS EKS Microservices Platform
 
 ## Overview
-This project demonstrates a scalable, production-grade microservices platform on AWS EKS, leveraging Terraform and Helm for infrastructure and application deployment. It is architected with modern DevOps, Cloud Engineering, SRE, and DevSecOps best practices.
+This project demonstrates a scalable, production-grade microservices platform on AWS EKS, leveraging Terraform and Helm for infrastructure and application deployment.
 
 ## Architecture Diagram
 ```ascii
