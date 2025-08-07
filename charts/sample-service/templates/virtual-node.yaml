@@ -1,0 +1,19 @@
+{{- if .Values.appmesh.enabled }}
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualNode
+metadata:
+  name: {{ include "sample-service.fullname" . }}
+  labels:
+    {{- include "sample-service.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "sample-service.selectorLabels" . | nindent 6 }}
+  listeners:
+    {{- toYaml .Values.appmesh.virtualNode.listeners | nindent 4 }}
+  serviceDiscovery:
+    dns:
+      hostname: {{ include "sample-service.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  backends:
+    {{- toYaml .Values.appmesh.virtualNode.backends | nindent 4 }}
+{{- end }}
