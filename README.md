@@ -4,7 +4,55 @@
 This project demonstrates a scalable, production-grade microservices platform on AWS EKS, leveraging Terraform and Helm for infrastructure and application deployment. It is architected with modern DevOps, Cloud Engineering, SRE, and DevSecOps best practices.
 
 ## Architecture Diagram
-![EKS Microservices Platform Architecture](https://raw.githubusercontent.com/ruslanbaba/eks-microservices-platform/main/docs/architecture-diagram.png)
+```ascii
+                                     AWS Cloud
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                                                                              │
+│  ┌─────────────┐          Route53/CloudFront                                 │
+│  │   Users     │──────────┐                                                  │
+│  └─────────────┘          ▼                                                  │
+│                    ┌──────────────┐        ┌───────────────┐                 │
+│                    │     WAF      │───────▶│  Application  │                 │
+│                    └──────────────┘        │ Load Balancer │                 │
+│                                           └───────┬───────┘                  │
+│                                                   │                          │
+│            ┌────────────────────────────────────────────────────────┐       │
+│            │                     EKS Cluster                         │       │
+│            │  ┌────────────┐   ┌────────────┐    ┌────────────┐     │       │
+│            │  │            │   │            │    │            │     │       │
+│            │  │   Node     │   │   Node     │    │   Node     │     │       │
+│            │  │  Pool 1    │   │  Pool 2    │    │  Pool 3    │     │       │
+│            │  │            │   │            │    │            │     │       │
+│            │  └────────────┘   └────────────┘    └────────────┘     │       │
+│            │                                                         │       │
+│            │  ┌─────────────────────────────────────────────────┐   │       │
+│            │  │              Service Mesh (AWS App Mesh)         │   │       │
+│            │  └─────────────────────────────────────────────────┘   │       │
+│            │                                                         │       │
+│            │  ┌──────────┐ ┌───────────┐ ┌────────────┐ ┌───────┐  │       │
+│            │  │Monitoring│ │  Logging  │ │  Tracing   │ │ GitOps│  │       │
+│            │  │Prometheus│ │   Loki    │ │  X-Ray     │ │ ArgoCD│  │       │
+│            │  └──────────┘ └───────────┘ └────────────┘ └───────┘  │       │
+│            └────────────────────────────────────────────────────────┘       │
+│                                                                              │
+│     ┌──────────┐  ┌──────────┐  ┌───────────┐  ┌──────────┐  ┌──────────┐  │
+│     │          │  │          │  │           │  │          │  │          │  │
+│     │   RDS    │  │  Redis   │  │ ElastiCache│  │  S3     │  │ DynamoDB │  │
+│     │          │  │          │  │           │  │          │  │          │  │
+│     └──────────┘  └──────────┘  └───────────┘  └──────────┘  └──────────┘  │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+Core Components:
+1. Multi-AZ EKS Cluster with managed node groups
+2. AWS App Mesh for service mesh capabilities
+3. Monitoring stack (Prometheus, Grafana, Thanos)
+4. Logging stack (Loki, CloudWatch)
+5. Tracing (X-Ray, Jaeger)
+6. GitOps with ArgoCD
+7. Managed AWS services (RDS, Redis, ElastiCache, S3, DynamoDB)
+8. Security layers (WAF, Network Policies, Pod Security)
+```
 
 ## Key Features
 - **Scalable EKS Cluster**: Provisioned using Terraform for infrastructure-as-code.
